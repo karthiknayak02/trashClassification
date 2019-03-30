@@ -8,8 +8,10 @@ DroneBot Workshop 2018
 https://dronebotworkshop.com
 */
 
-//Include the Arduino Stepper Library
+// Include the Arduino Stepper Library
 #include <Stepper.h>
+#include "FS.h"
+
 
 // Define Constants
 
@@ -56,8 +58,23 @@ void setup()
 
 void loop()
 {
-  test = readData("D:/mySensorData.txt");
-  Serial.print(test);
+
+  int curCnt = 0;
+  File f = SPIFFS.open("/test.txt", "r");
+  if (!f) {
+    Serial.println("Count file open failed on read.");
+  } else {
+    while(f.available()) {
+      //Lets read line by line from the file
+      String line = f.readStringUntil('\n');
+      curCnt = line.toInt();
+      Serial.print("Program has run ");
+      Serial.print(line);
+      Serial.print(" times  ");
+      break; //if left in, we'll just read the first line then break out of the while.
+    }
+    f.close();
+  }
 
   // Slow - 2-step CW sequence to observe lights on driver board
   steppermotor.setSpeed(10);
