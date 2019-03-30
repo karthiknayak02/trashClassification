@@ -11,8 +11,6 @@ https://dronebotworkshop.com
 // Include the Arduino Stepper Library
 #include <Stepper.h>
 
-
-
 // Define Constants
 
 // Number of steps per internal motor revolution
@@ -47,15 +45,15 @@ int buttonState1 = LOW;
 int buttonState2 = LOW;
 
 // Setup variable
-void setup()
-{
+void setup() {
   pinMode(button1, INPUT);
   pinMode(button2, INPUT);
   pinMode(buttonState1, INPUT);
   pinMode(buttonState2, INPUT);
   // Nothing (Stepper Library sets pins as outputs)
 }
-void loop(){
+
+void loop() {
   // Slow - 2-step CW sequence to observe lights on driver board
   steppermotor.setSpeed(10);
   StepsRequired  =  0;
