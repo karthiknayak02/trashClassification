@@ -10,7 +10,7 @@ https://dronebotworkshop.com
 
 // Include the Arduino Stepper Library
 #include <Stepper.h>
-#include "FS.h"
+
 
 
 // Define Constants
@@ -46,6 +46,11 @@ const int button2 = 13;
 int buttonState1 = LOW;
 int buttonState2 = LOW;
 
+
+#include <AccelStepper.h>
+AccelStepper stepper(1, 12, 13);
+bool res = false;
+
 // Setup variable
 void setup()
 {
@@ -53,28 +58,21 @@ void setup()
   pinMode(button2, INPUT);
   pinMode(buttonState1, INPUT);
   pinMode(buttonState2, INPUT);
-  // Nothing  (Stepper Library sets pins as outputs)
+  // Nothing (Stepper Library sets pins as outputs)
+
+  stepper.setMaxSpeed(300);
+  stepper.setAcceleration(100);
+  Serial.begin(9600);
+  //opens the serial connection
 }
 
 void loop()
 {
 
-  int curCnt = 0;
-  File f = SPIFFS.open("/test.txt", "r");
-  if (!f) {
-    Serial.println("Count file open failed on read.");
-  } else {
-    while(f.available()) {
-      //Lets read line by line from the file
-      String line = f.readStringUntil('\n');
-      curCnt = line.toInt();
-      Serial.print("Program has run ");
-      Serial.print(line);
-      Serial.print(" times  ");
-      break; //if left in, we'll just read the first line then break out of the while.
-    }
-    f.close();
+  if (res) {
+    Serial.print("connect to python");
   }
+
 
   // Slow - 2-step CW sequence to observe lights on driver board
   steppermotor.setSpeed(10);
