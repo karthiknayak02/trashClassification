@@ -46,11 +46,6 @@ const int button2 = 13;
 int buttonState1 = LOW;
 int buttonState2 = LOW;
 
-
-#include <AccelStepper.h>
-AccelStepper stepper(1, 12, 13);
-bool res = false;
-
 // Setup variable
 void setup()
 {
@@ -59,26 +54,13 @@ void setup()
   pinMode(buttonState1, INPUT);
   pinMode(buttonState2, INPUT);
   // Nothing (Stepper Library sets pins as outputs)
-
-  stepper.setMaxSpeed(300);
-  stepper.setAcceleration(100);
-  Serial.begin(9600);
-  //opens the serial connection
 }
-
-void loop()
-{
-
-  if (res) {
-    Serial.print("connect to python");
-  }
-
-
+void loop(){
   // Slow - 2-step CW sequence to observe lights on driver board
   steppermotor.setSpeed(10);
-  StepsRequired  =  4;
+  StepsRequired  =  0;
   steppermotor.step(StepsRequired);
-  delay(500);
+  //delay(500);
   buttonState1 = digitalRead(button1);
   buttonState2 = digitalRead(button2);
 
@@ -90,23 +72,23 @@ void loop()
 
   // Rotate CW 1/2 turn slowly
   if (buttonState1 == HIGH) {
-    StepsRequired  =  STEPS_PER_OUT_REV/2;
+    StepsRequired  =  STEPS_PER_OUT_REV;
     steppermotor.setSpeed(1000);
     steppermotor.step(StepsRequired);
     checker = false;
     buttonState1 = LOW;
     steppermotor.setSpeed(0);
-    delay(2000);
+   // delay(2000);
   }
 
   //Rotate CCW 1/2 turn quickly
   if (buttonState2 == HIGH) {
-    StepsRequired  =  - STEPS_PER_OUT_REV/2;
+    StepsRequired  =  - STEPS_PER_OUT_REV;
     steppermotor.setSpeed(1000);
     steppermotor.step(StepsRequired);
     checker = false;
     buttonState2 = LOW;
     steppermotor.setSpeed(0);
-    delay(2000);
+    // delay(2000);
   }
 }
